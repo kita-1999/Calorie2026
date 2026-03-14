@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -24,548 +25,550 @@
     --radius: 16px;
   }
 
-  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-  body {
-    background: var(--bg);
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    min-height: 100dvh;
-    max-width: 430px;
-    margin: 0 auto;
-    position: relative;
-    overflow-x: hidden;
-  }
-
-  h1, h2, h3 { font-family: 'Syne', sans-serif; }
-
-  /* ── APP SHELL ── */
-  #app { padding-bottom: 80px; min-height: 100dvh; }
-
-  /* ── NAV ── */
-  nav {
-    position: fixed;
-    bottom: 0; left: 50%;
-    transform: translateX(-50%);
-    width: 100%; max-width: 430px;
-    background: rgba(255,255,255,0.95);
-    backdrop-filter: blur(20px);
-    border-top: 1px solid var(--border);
-    display: flex;
-    z-index: 100;
-    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-  }
-
-  .nav-btn {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 4px;
-    padding: 6px 0;
-    background: none;
-    border: none;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 10px;
-    cursor: pointer;
-    transition: color .2s;
-  }
-
-  .nav-btn.active { color: var(--accent); }
-  .nav-btn svg { width: 22px; height: 22px; }
-
-  /* ── HEADER ── */
-  .page-header {
-    padding: 56px 20px 20px;
-    background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
-  }
-
-  .page-title {
-    font-size: 28px;
-    font-weight: 800;
-    letter-spacing: -0.5px;
-  }
-
-  .page-subtitle { font-size: 14px; color: var(--muted); margin-top: 4px; }
-
-  /* ── TODAY ── */
-  .ring-card {
-    margin: 0 20px;
-    background: var(--surface);
-    border-radius: 24px;
-    padding: 28px;
-    display: flex;
-    align-items: center;
-    gap: 24px;
-    border: 1px solid var(--border);
-  }
-
-  .ring-wrap { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
-
-  .ring-wrap svg { transform: rotate(-90deg); }
-
-  .ring-bg { fill: none; stroke: #e8e8f0; stroke-width: 10; }
-  .ring-fg { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
-
-  .ring-label {
-    position: absolute;
-    top: 50%; left: 50%;
-    transform: translate(-50%,-50%);
-    text-align: center;
-  }
-
-  .ring-cal { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; line-height: 1; }
-  .ring-unit { font-size: 10px; color: var(--muted); margin-top: 2px; }
-
-  .ring-info { flex: 1; }
-  .ring-info .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
-  .ring-info .value { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
-
-  .info-row { margin-bottom: 12px; }
-  .info-row:last-child { margin-bottom: 0; }
-
-  .pct-bar {
-    height: 4px;
-    background: var(--surface2);
-    border-radius: 2px;
-    margin-top: 6px;
-    overflow: hidden;
-  }
-
-  .pct-fill {
-    height: 100%;
-    border-radius: 2px;
-    background: linear-gradient(90deg, var(--accent), var(--accent2));
-    transition: width .6s cubic-bezier(.4,0,.2,1);
-  }
-
-  /* ── SECTION ── */
-  .section {
-    margin: 20px 20px 0;
-  }
-
-  .section-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 12px;
-  }
-
-  .section-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-  }
-
-  .btn-text {
-    background: none;
-    border: none;
-    color: var(--accent);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 13px;
-    cursor: pointer;
-  }
-
-  /* ── FOOD LIST ── */
-  .food-item {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin-bottom: 8px;
-  }
-
-  .food-name { font-size: 15px; font-weight: 500; }
-  .food-tag { font-size: 11px; color: var(--muted); margin-top: 2px; }
-  .food-cal { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--accent); }
-  .food-cal span { font-size: 11px; font-weight: 400; color: var(--muted); }
-
-  .food-del {
-    background: none;
-    border: none;
-    color: var(--muted);
-    cursor: pointer;
-    padding: 4px;
-    border-radius: 6px;
-    transition: color .2s;
-    margin-left: 8px;
-  }
-
-  .food-del:active { color: #ff4a4a; }
-
-  .empty-state {
-    text-align: center;
-    color: var(--muted);
-    padding: 32px 0;
-    font-size: 14px;
-  }
-
-  /* ── FAB ── */
-  .fab {
-    position: fixed;
-    bottom: calc(80px + env(safe-area-inset-bottom));
-    right: 20px;
-    width: 56px; height: 56px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    color: white;
-    font-size: 28px;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(255,107,74,.4);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform .15s;
-    z-index: 90;
-  }
-
-  .fab:active { transform: scale(0.92); }
-
-  /* ── MODAL ── */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,.4);
-    backdrop-filter: blur(8px);
-    z-index: 200;
-    display: flex;
-    align-items: flex-end;
-    opacity: 0;
-    pointer-events: none;
-    transition: opacity .25s;
-  }
-
-  .modal-overlay.open {
-    opacity: 1;
-    pointer-events: all;
-  }
-
-  .modal {
-    background: var(--surface);
-    border-radius: 24px 24px 0 0;
-    width: 100%;
-    max-width: 430px;
-    margin: 0 auto;
-    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-    transform: translateY(100%);
-    transition: transform .3s cubic-bezier(.4,0,.2,1);
-  }
-
-  .modal-overlay.open .modal {
-    transform: translateY(0);
-  }
-
-  .modal-handle {
-    width: 40px; height: 4px;
-    background: var(--border);
-    border-radius: 2px;
-    margin: 0 auto 20px;
-  }
-
-  .modal-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 20px;
-    font-weight: 700;
-    margin-bottom: 20px;
-  }
-
-  /* ── TABS ── */
-  .tabs {
-    display: flex;
-    background: var(--surface2);
-    border-radius: 10px;
-    padding: 4px;
-    margin-bottom: 20px;
-  }
-
-  .tab {
-    flex: 1;
-    padding: 8px;
-    border: none;
-    background: none;
-    color: var(--muted);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 14px;
-    border-radius: 7px;
-    cursor: pointer;
-    transition: all .2s;
-  }
-
-  .tab.active {
-    background: var(--surface);
-    color: var(--text);
-    font-weight: 500;
-  }
-
-  /* ── FORM ── */
-  .form-group { margin-bottom: 16px; }
-  .form-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: block; }
-
-  .form-input {
-    width: 100%;
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 12px 14px;
-    color: var(--text);
-    font-family: 'DM Sans', sans-serif;
-    font-size: 16px;
-    outline: none;
-    transition: border-color .2s;
-  }
-
-  .form-input:focus { border-color: var(--accent); }
-
-  .btn-primary {
-    width: 100%;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    border: none;
-    border-radius: 12px;
-    padding: 14px;
-    color: white;
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    cursor: pointer;
-    transition: opacity .2s;
-  }
-
-  .btn-primary:active { opacity: .8; }
-
-  /* ── FAVORITES ── */
-  .fav-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 8px;
-    margin-bottom: 16px;
-  }
-
-  .fav-chip {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 10px 12px;
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    transition: border-color .2s;
-    text-align: left;
-  }
-
-  .fav-chip:active { border-color: var(--accent); }
-  .fav-chip .f-name { font-size: 13px; font-weight: 500; }
-  .fav-chip .f-cal { font-size: 12px; color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 700; }
-
-  /* ── CALENDAR ── */
-  .cal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    margin: 0 20px 16px;
-  }
-
-  .cal-nav {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    color: var(--text);
-    width: 36px; height: 36px;
-    border-radius: 10px;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .cal-month {
-    font-family: 'Syne', sans-serif;
-    font-size: 18px;
-    font-weight: 700;
-  }
-
-  .cal-grid {
-    margin: 0 20px;
-    display: grid;
-    grid-template-columns: repeat(7, 1fr);
-    gap: 4px;
-  }
-
-  .cal-day-label {
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-    padding: 4px 0 8px;
-  }
-
-  .cal-day {
-    aspect-ratio: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    border-radius: 10px;
-    cursor: pointer;
-    font-size: 14px;
-    transition: background .15s;
-    gap: 2px;
-  }
-
-  .cal-day:empty { cursor: default; }
-  .cal-day.has-data { background: var(--surface); }
-  .cal-day.today { background: rgba(255,107,74,.15); color: var(--accent); font-weight: 700; }
-  .cal-day.selected { background: var(--accent); color: white; }
-  .cal-day .cal-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
-  .cal-day.selected .cal-dot { background: white; }
-
-  .cal-detail {
-    margin: 16px 20px 0;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 16px;
-  }
-
-  .cal-detail-title {
-    font-family: 'Syne', sans-serif;
-    font-size: 14px;
-    font-weight: 700;
-    margin-bottom: 12px;
-    color: var(--muted);
-  }
-
-  /* ── STATS ── */
-  .stats-grid {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 12px;
-    margin: 0 20px;
-  }
-
-  .stat-card {
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    padding: 18px 16px;
-  }
-
-  .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
-
-  .stat-value {
-    font-family: 'Syne', sans-serif;
-    font-size: 28px;
-    font-weight: 800;
-    line-height: 1;
-    background: linear-gradient(135deg, var(--accent), var(--accent2));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-  }
-
-  .stat-unit { font-size: 11px; color: var(--muted); margin-top: 4px; }
-
-  .stat-card.full {
-    grid-column: 1 / -1;
-  }
-
-  /* ── SETTINGS ── */
-  .settings-card {
-    margin: 0 20px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    overflow: hidden;
-  }
-
-  .setting-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 16px;
-    border-bottom: 1px solid var(--border);
-  }
-
-  .setting-row:last-child { border-bottom: none; }
-  .setting-row-label { font-size: 15px; }
-  .setting-row-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
-
-  .setting-input {
-    background: var(--surface2);
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 6px 10px;
-    color: var(--text);
-    font-family: 'Syne', sans-serif;
-    font-size: 16px;
-    font-weight: 700;
-    width: 100px;
-    text-align: right;
-    outline: none;
-  }
-
-  .setting-input:focus { border-color: var(--accent); }
-
-  /* page transition */
-  .page { display: none; }
-  .page.active { display: block; animation: fadeIn .2s ease; }
-
-  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-  .badge {
-    display: inline-block;
-    padding: 2px 8px;
-    border-radius: 20px;
-    font-size: 11px;
-    font-weight: 600;
-    background: rgba(255,107,74,.15);
-    color: var(--accent);
-  }
-
-  .badge.green { background: rgba(74,222,128,.15); color: var(--green); }
-
-  .fav-section-title {
-    font-size: 12px;
-    color: var(--muted);
-    margin-bottom: 10px;
-    padding-top: 4px;
-  }
-
-  .fav-item-row {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 12px 16px;
-    background: var(--surface);
-    border: 1px solid var(--border);
-    border-radius: var(--radius);
-    margin-bottom: 8px;
-  }
-
-  .no-fav { color: var(--muted); font-size: 13px; text-align: center; padding: 20px 0; }
-
-  .streak-card {
-    margin: 12px 20px 0;
-    background: linear-gradient(135deg, rgba(255,90,54,.07), rgba(255,159,28,.07));
-    border: 1px solid rgba(255,90,54,.15);
-    border-radius: var(--radius);
-    padding: 16px;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  .streak-icon { font-size: 32px; }
-  .streak-text .s-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
-  .streak-text .s-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+body {
+background: var(–bg);
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+min-height: 100dvh;
+max-width: 430px;
+margin: 0 auto;
+position: relative;
+overflow-x: hidden;
+}
+
+h1, h2, h3 { font-family: ‘Syne’, sans-serif; }
+
+/* ── APP SHELL ── */
+#app { padding-bottom: 80px; min-height: 100dvh; }
+
+/* ── NAV ── */
+nav {
+position: fixed;
+bottom: 0; left: 50%;
+transform: translateX(-50%);
+width: 100%; max-width: 430px;
+background: rgba(255,255,255,0.95);
+backdrop-filter: blur(20px);
+border-top: 1px solid var(–border);
+display: flex;
+z-index: 100;
+padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+}
+
+.nav-btn {
+flex: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+gap: 4px;
+padding: 6px 0;
+background: none;
+border: none;
+color: var(–muted);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 10px;
+cursor: pointer;
+transition: color .2s;
+}
+
+.nav-btn.active { color: var(–accent); }
+.nav-btn svg { width: 22px; height: 22px; }
+
+/* ── HEADER ── */
+.page-header {
+padding: 56px 20px 20px;
+background: linear-gradient(180deg, var(–surface) 0%, transparent 100%);
+}
+
+.page-title {
+font-size: 28px;
+font-weight: 800;
+letter-spacing: -0.5px;
+}
+
+.page-subtitle { font-size: 14px; color: var(–muted); margin-top: 4px; }
+
+/* ── TODAY ── */
+.ring-card {
+margin: 0 20px;
+background: var(–surface);
+border-radius: 24px;
+padding: 28px;
+display: flex;
+align-items: center;
+gap: 24px;
+border: 1px solid var(–border);
+}
+
+.ring-wrap { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+
+.ring-wrap svg { transform: rotate(-90deg); }
+
+.ring-bg { fill: none; stroke: #e8e8f0; stroke-width: 10; }
+.ring-fg { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
+
+.ring-label {
+position: absolute;
+top: 50%; left: 50%;
+transform: translate(-50%,-50%);
+text-align: center;
+}
+
+.ring-cal { font-family: ‘Syne’, sans-serif; font-size: 22px; font-weight: 700; line-height: 1; }
+.ring-unit { font-size: 10px; color: var(–muted); margin-top: 2px; }
+
+.ring-info { flex: 1; }
+.ring-info .label { font-size: 12px; color: var(–muted); margin-bottom: 4px; }
+.ring-info .value { font-family: ‘Syne’, sans-serif; font-size: 18px; font-weight: 700; }
+
+.info-row { margin-bottom: 12px; }
+.info-row:last-child { margin-bottom: 0; }
+
+.pct-bar {
+height: 4px;
+background: var(–surface2);
+border-radius: 2px;
+margin-top: 6px;
+overflow: hidden;
+}
+
+.pct-fill {
+height: 100%;
+border-radius: 2px;
+background: linear-gradient(90deg, var(–accent), var(–accent2));
+transition: width .6s cubic-bezier(.4,0,.2,1);
+}
+
+/* ── SECTION ── */
+.section {
+margin: 20px 20px 0;
+}
+
+.section-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 12px;
+}
+
+.section-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 16px;
+font-weight: 700;
+}
+
+.btn-text {
+background: none;
+border: none;
+color: var(–accent);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 13px;
+cursor: pointer;
+}
+
+/* ── FOOD LIST ── */
+.food-item {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: var(–radius);
+padding: 14px 16px;
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 8px;
+}
+
+.food-name { font-size: 15px; font-weight: 500; }
+.food-tag { font-size: 11px; color: var(–muted); margin-top: 2px; }
+.food-cal { font-family: ‘Syne’, sans-serif; font-size: 18px; font-weight: 700; color: var(–accent); }
+.food-cal span { font-size: 11px; font-weight: 400; color: var(–muted); }
+
+.food-del {
+background: none;
+border: none;
+color: var(–muted);
+cursor: pointer;
+padding: 4px;
+border-radius: 6px;
+transition: color .2s;
+margin-left: 8px;
+}
+
+.food-del:active { color: #ff4a4a; }
+
+.empty-state {
+text-align: center;
+color: var(–muted);
+padding: 32px 0;
+font-size: 14px;
+}
+
+/* ── FAB ── */
+.fab {
+position: fixed;
+bottom: calc(80px + env(safe-area-inset-bottom));
+right: 20px;
+width: 56px; height: 56px;
+border-radius: 50%;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+border: none;
+color: white;
+font-size: 28px;
+cursor: pointer;
+box-shadow: 0 4px 20px rgba(255,107,74,.4);
+display: flex;
+align-items: center;
+justify-content: center;
+transition: transform .15s;
+z-index: 90;
+}
+
+.fab:active { transform: scale(0.92); }
+
+/* ── MODAL ── */
+.modal-overlay {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,.4);
+backdrop-filter: blur(8px);
+z-index: 200;
+display: flex;
+align-items: flex-end;
+opacity: 0;
+pointer-events: none;
+transition: opacity .25s;
+}
+
+.modal-overlay.open {
+opacity: 1;
+pointer-events: all;
+}
+
+.modal {
+background: var(–surface);
+border-radius: 24px 24px 0 0;
+width: 100%;
+max-width: 430px;
+margin: 0 auto;
+padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+transform: translateY(100%);
+transition: transform .3s cubic-bezier(.4,0,.2,1);
+}
+
+.modal-overlay.open .modal {
+transform: translateY(0);
+}
+
+.modal-handle {
+width: 40px; height: 4px;
+background: var(–border);
+border-radius: 2px;
+margin: 0 auto 20px;
+}
+
+.modal-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 20px;
+font-weight: 700;
+margin-bottom: 20px;
+}
+
+/* ── TABS ── */
+.tabs {
+display: flex;
+background: var(–surface2);
+border-radius: 10px;
+padding: 4px;
+margin-bottom: 20px;
+}
+
+.tab {
+flex: 1;
+padding: 8px;
+border: none;
+background: none;
+color: var(–muted);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 14px;
+border-radius: 7px;
+cursor: pointer;
+transition: all .2s;
+}
+
+.tab.active {
+background: var(–surface);
+color: var(–text);
+font-weight: 500;
+}
+
+/* ── FORM ── */
+.form-group { margin-bottom: 16px; }
+.form-label { font-size: 12px; color: var(–muted); margin-bottom: 6px; display: block; }
+
+.form-input {
+width: 100%;
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 12px 14px;
+color: var(–text);
+font-family: ‘DM Sans’, sans-serif;
+font-size: 16px;
+outline: none;
+transition: border-color .2s;
+}
+
+.form-input:focus { border-color: var(–accent); }
+
+.btn-primary {
+width: 100%;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+border: none;
+border-radius: 12px;
+padding: 14px;
+color: white;
+font-family: ‘Syne’, sans-serif;
+font-size: 16px;
+font-weight: 700;
+cursor: pointer;
+transition: opacity .2s;
+}
+
+.btn-primary:active { opacity: .8; }
+
+/* ── FAVORITES ── */
+.fav-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 8px;
+margin-bottom: 16px;
+}
+
+.fav-chip {
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 10px;
+padding: 10px 12px;
+cursor: pointer;
+display: flex;
+flex-direction: column;
+gap: 2px;
+transition: border-color .2s;
+text-align: left;
+}
+
+.fav-chip:active { border-color: var(–accent); }
+.fav-chip .f-name { font-size: 13px; font-weight: 500; }
+.fav-chip .f-cal { font-size: 12px; color: var(–accent); font-family: ‘Syne’, sans-serif; font-weight: 700; }
+
+/* ── CALENDAR ── */
+.cal-header {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin: 0 20px 16px;
+}
+
+.cal-nav {
+background: var(–surface);
+border: 1px solid var(–border);
+color: var(–text);
+width: 36px; height: 36px;
+border-radius: 10px;
+cursor: pointer;
+display: flex;
+align-items: center;
+justify-content: center;
+}
+
+.cal-month {
+font-family: ‘Syne’, sans-serif;
+font-size: 18px;
+font-weight: 700;
+}
+
+.cal-grid {
+margin: 0 20px;
+display: grid;
+grid-template-columns: repeat(7, 1fr);
+gap: 4px;
+}
+
+.cal-day-label {
+text-align: center;
+font-size: 11px;
+color: var(–muted);
+padding: 4px 0 8px;
+}
+
+.cal-day {
+aspect-ratio: 1;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+border-radius: 10px;
+cursor: pointer;
+font-size: 14px;
+transition: background .15s;
+gap: 2px;
+}
+
+.cal-day:empty { cursor: default; }
+.cal-day.has-data { background: var(–surface); }
+.cal-day.today { background: rgba(255,107,74,.15); color: var(–accent); font-weight: 700; }
+.cal-day.selected { background: var(–accent); color: white; }
+.cal-day .cal-dot { width: 4px; height: 4px; border-radius: 50%; background: var(–green); }
+.cal-day.selected .cal-dot { background: white; }
+
+.cal-detail {
+margin: 16px 20px 0;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: var(–radius);
+padding: 16px;
+}
+
+.cal-detail-title {
+font-family: ‘Syne’, sans-serif;
+font-size: 14px;
+font-weight: 700;
+margin-bottom: 12px;
+color: var(–muted);
+}
+
+/* ── STATS ── */
+.stats-grid {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 12px;
+margin: 0 20px;
+}
+
+.stat-card {
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: var(–radius);
+padding: 18px 16px;
+}
+
+.stat-label { font-size: 12px; color: var(–muted); margin-bottom: 6px; }
+
+.stat-value {
+font-family: ‘Syne’, sans-serif;
+font-size: 28px;
+font-weight: 800;
+line-height: 1;
+background: linear-gradient(135deg, var(–accent), var(–accent2));
+-webkit-background-clip: text;
+-webkit-text-fill-color: transparent;
+}
+
+.stat-unit { font-size: 11px; color: var(–muted); margin-top: 4px; }
+
+.stat-card.full {
+grid-column: 1 / -1;
+}
+
+/* ── SETTINGS ── */
+.settings-card {
+margin: 0 20px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: var(–radius);
+overflow: hidden;
+}
+
+.setting-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 16px;
+border-bottom: 1px solid var(–border);
+}
+
+.setting-row:last-child { border-bottom: none; }
+.setting-row-label { font-size: 15px; }
+.setting-row-sub { font-size: 12px; color: var(–muted); margin-top: 2px; }
+
+.setting-input {
+background: var(–surface2);
+border: 1px solid var(–border);
+border-radius: 8px;
+padding: 6px 10px;
+color: var(–text);
+font-family: ‘Syne’, sans-serif;
+font-size: 16px;
+font-weight: 700;
+width: 100px;
+text-align: right;
+outline: none;
+}
+
+.setting-input:focus { border-color: var(–accent); }
+
+/* page transition */
+.page { display: none; }
+.page.active { display: block; animation: fadeIn .2s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+.badge {
+display: inline-block;
+padding: 2px 8px;
+border-radius: 20px;
+font-size: 11px;
+font-weight: 600;
+background: rgba(255,107,74,.15);
+color: var(–accent);
+}
+
+.badge.green { background: rgba(74,222,128,.15); color: var(–green); }
+
+.fav-section-title {
+font-size: 12px;
+color: var(–muted);
+margin-bottom: 10px;
+padding-top: 4px;
+}
+
+.fav-item-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 12px 16px;
+background: var(–surface);
+border: 1px solid var(–border);
+border-radius: var(–radius);
+margin-bottom: 8px;
+}
+
+.no-fav { color: var(–muted); font-size: 13px; text-align: center; padding: 20px 0; }
+
+.streak-card {
+margin: 12px 20px 0;
+background: linear-gradient(135deg, rgba(255,90,54,.07), rgba(255,159,28,.07));
+border: 1px solid rgba(255,90,54,.15);
+border-radius: var(–radius);
+padding: 16px;
+display: flex;
+align-items: center;
+gap: 12px;
+}
+
+.streak-icon { font-size: 32px; }
+.streak-text .s-title { font-family: ‘Syne’, sans-serif; font-size: 14px; font-weight: 700; }
+.streak-text .s-sub { font-size: 12px; color: var(–muted); margin-top: 2px; }
 </style>
+
 </head>
 <body>
 <div id="app">
 
   <!-- TODAY PAGE -->
+
   <div class="page active" id="page-today">
     <div class="page-header">
       <div style="display:flex;align-items:center;justify-content:space-between">
@@ -577,71 +580,83 @@
       </div>
     </div>
 
-    <!-- Ring -->
-    <div class="ring-card">
-      <div class="ring-wrap">
-        <svg viewBox="0 0 110 110" width="110" height="110">
-          <circle class="ring-bg" cx="55" cy="55" r="48"/>
-          <circle class="ring-fg" id="ring-circle" cx="55" cy="55" r="48"
-            stroke-dasharray="301.6"
-            stroke-dashoffset="301.6"
-            stroke="url(#ringGrad)"/>
-          <defs>
-            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-              <stop offset="0%" stop-color="#ff6b4a"/>
-              <stop offset="100%" stop-color="#ffb347"/>
-            </linearGradient>
-          </defs>
-        </svg>
-        <div class="ring-label">
-          <div class="ring-cal" id="ring-cal">0</div>
-          <div class="ring-unit">kcal</div>
-        </div>
-      </div>
-      <div class="ring-info">
-        <div class="info-row">
-          <div class="label">目標</div>
-          <div class="value" id="ring-goal">— kcal</div>
-        </div>
-        <div class="info-row">
-          <div class="label">🍽 食事</div>
-          <div class="value" id="ring-food">0 kcal</div>
-          <div class="pct-bar"><div class="pct-fill" id="pct-food" style="width:0%"></div></div>
-        </div>
-        <div class="info-row">
-          <div class="label">🏃 運動</div>
-          <div class="value" id="ring-exercise" style="color:var(--green)">-0 kcal</div>
-        </div>
-      </div>
+```
+<!-- Ring -->
+<div class="ring-card">
+  <div class="ring-wrap">
+    <svg viewBox="0 0 110 110" width="110" height="110">
+      <circle class="ring-bg" cx="55" cy="55" r="48"/>
+      <circle class="ring-fg" id="ring-circle" cx="55" cy="55" r="48"
+        stroke-dasharray="301.6"
+        stroke-dashoffset="301.6"
+        stroke="url(#ringGrad)"/>
+      <defs>
+        <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stop-color="#ff6b4a"/>
+          <stop offset="100%" stop-color="#ffb347"/>
+        </linearGradient>
+      </defs>
+    </svg>
+    <div class="ring-label">
+      <div class="ring-cal" id="ring-cal">0</div>
+      <div class="ring-unit">kcal</div>
     </div>
+  </div>
+  <div class="ring-info">
+    <div class="info-row">
+      <div class="label">目標</div>
+      <div class="value" id="ring-goal">— kcal</div>
+    </div>
+    <div class="info-row">
+      <div class="label">🍽 食事</div>
+      <div class="value" id="ring-food">0 kcal</div>
+      <div class="pct-bar"><div class="pct-fill" id="pct-food" style="width:0%"></div></div>
+    </div>
+    <div class="info-row">
+      <div class="label">🏃 運動</div>
+      <div class="value" id="ring-exercise" style="color:var(--green)">-0 kcal</div>
+    </div>
+  </div>
+</div>
 
-    <!-- Streak -->
-    <div class="streak-card" id="streak-card">
-      <div class="streak-icon">🔥</div>
-      <div class="streak-text">
-        <div class="s-title" id="streak-title">記録継続中</div>
-        <div class="s-sub" id="streak-sub">今日も記録しよう！</div>
-      </div>
-    </div>
+<!-- Streak -->
+<div class="streak-card" id="streak-card">
+  <div class="streak-icon">🔥</div>
+  <div class="streak-text">
+    <div class="s-title" id="streak-title">記録継続中</div>
+    <div class="s-sub" id="streak-sub">今日も記録しよう！</div>
+  </div>
+</div>
 
-    <!-- Meal List -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title">🍽 今日の食事</div>
-      </div>
-      <div id="today-meals"></div>
-    </div>
+<!-- Meal List -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">🍽 今日の食事</div>
+  </div>
+  <div id="today-meals"></div>
+</div>
 
-    <!-- Exercise List -->
-    <div class="section">
-      <div class="section-header">
-        <div class="section-title">🏃 運動</div>
-      </div>
-      <div id="today-exercise"></div>
-    </div>
+<!-- Exercise List -->
+<div class="section">
+  <div class="section-header">
+    <div class="section-title">🏃 運動</div>
+  </div>
+  <div id="today-exercise"></div>
+</div>
+
+<!-- Gym -->
+<div class="section" style="margin-bottom:20px">
+  <div class="section-header">
+    <div class="section-title">🏋️ ジム</div>
+  </div>
+  <div id="gym-card"></div>
+</div>
+```
+
   </div>
 
   <!-- CALENDAR PAGE -->
+
   <div class="page" id="page-calendar">
     <div class="page-header">
       <div class="page-title">カレンダー</div>
@@ -657,6 +672,7 @@
   </div>
 
   <!-- STATS PAGE -->
+
   <div class="page" id="page-stats">
     <div class="page-header">
       <div class="page-title">統計</div>
@@ -666,6 +682,7 @@
   </div>
 
   <!-- FAVORITES PAGE -->
+
   <div class="page" id="page-favorites">
     <div class="page-header">
       <div class="page-title">お気に入り</div>
@@ -677,6 +694,7 @@
   </div>
 
   <!-- SETTINGS PAGE -->
+
   <div class="page" id="page-settings">
     <div class="page-header">
       <div class="page-title">設定</div>
@@ -689,19 +707,32 @@
         </div>
         <input type="number" class="setting-input" id="goal-input" placeholder="2000" onchange="saveGoal()">
       </div>
-    </div>
-    <div style="margin: 20px 20px 0; color: var(--muted); font-size: 13px; line-height: 1.6;">
-      すべてのデータはこのデバイスのブラウザに保存されています。<br>
-      ブラウザのデータを消去するとデータが失われます。
-    </div>
+      <div class="setting-row">
+        <div>
+          <div class="setting-row-label">月のジム費用</div>
+          <div class="setting-row-sub">円 / 月</div>
+        </div>
+        <input type="number" class="setting-input" id="gym-fee-input" placeholder="7700" onchange="saveGymFee()">
+      </div>
+
+```
+</div>
+<div style="margin: 20px 20px 0; color: var(--muted); font-size: 13px; line-height: 1.6;">
+  すべてのデータはこのデバイスのブラウザに保存されています。<br>
+  ブラウザのデータを消去するとデータが失われます。
+</div>
+```
+
   </div>
 
 </div>
 
 <!-- FAB -->
+
 <button class="fab" id="fab" onclick="openModal()">+</button>
 
 <!-- NAV -->
+
 <nav>
   <button class="nav-btn active" onclick="showPage('today')" id="nav-today">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -726,51 +757,66 @@
 </nav>
 
 <!-- ADD MODAL -->
+
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalIfOutside(event)">
   <div class="modal">
     <div class="modal-handle"></div>
     <div class="modal-title">食事・運動を追加</div>
     <div class="form-group" style="margin-bottom:16px">
       <label class="form-label">📅 日付</label>
-      <input type="date" class="form-input" id="input-date">
+      <input type="date" class="form-input" id="input-date" onchange="updateGymCheck()">
     </div>
     <div class="tabs">
       <button class="tab active" onclick="switchTab('meal')" id="tab-meal">🍽 食事</button>
       <button class="tab" onclick="switchTab('exercise')" id="tab-exercise">🏃 運動</button>
     </div>
 
-    <!-- MEAL TAB -->
-    <div id="modal-meal">
-      <!-- Favorites quick select -->
-      <div id="fav-quick" style="margin-bottom:16px"></div>
+```
+<!-- GYM CHECK -->
+<div class="form-group" style="display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:10px;padding:12px 14px">
+  <input type="checkbox" id="input-gym-check" style="width:20px;height:20px;accent-color:var(--accent)">
+  <label for="input-gym-check" style="font-size:15px;cursor:pointer;font-weight:500">🏋️ 今日ジムに行った</label>
+</div>
 
-      <div class="form-group">
-        <label class="form-label">食品名</label>
-        <input type="text" class="form-input" id="input-food-name" placeholder="例：ご飯（茶碗1杯）">
-      </div>
-      <div class="form-group">
-        <label class="form-label">カロリー（kcal）</label>
-        <input type="number" class="form-input" id="input-food-cal" placeholder="例：250">
-      </div>
-      <div class="form-group" style="display:flex;align-items:center;gap:10px">
-        <input type="checkbox" id="input-fav-check" style="width:18px;height:18px;accent-color:var(--accent)">
-        <label for="input-fav-check" style="font-size:14px;cursor:pointer">⭐ お気に入りに追加</label>
-      </div>
-      <button class="btn-primary" onclick="addMeal()">追加する</button>
-    </div>
+<!-- MEAL TAB -->
+<div id="modal-meal">
+  <!-- Favorites quick select -->
+  <div id="fav-quick" style="margin-bottom:16px"></div>
 
-    <!-- EXERCISE TAB -->
-    <div id="modal-exercise" style="display:none">
-      <div class="form-group">
-        <label class="form-label">運動名</label>
-        <input type="text" class="form-input" id="input-ex-name" placeholder="例：ウォーキング30分">
-      </div>
-      <div class="form-group">
-        <label class="form-label">消費カロリー（kcal）</label>
-        <input type="number" class="form-input" id="input-ex-cal" placeholder="例：150">
-      </div>
-      <button class="btn-primary" onclick="addExercise()">追加する</button>
-    </div>
+  <div class="form-group">
+    <label class="form-label">食品名</label>
+    <input type="text" class="form-input" id="input-food-name" placeholder="例：ご飯（茶碗1杯）">
+  </div>
+  <div class="form-group">
+    <label class="form-label">カロリー（kcal）</label>
+    <input type="number" class="form-input" id="input-food-cal" placeholder="例：250">
+  </div>
+  <div class="form-group" style="display:flex;align-items:center;gap:10px">
+    <input type="checkbox" id="input-fav-check" style="width:18px;height:18px;accent-color:var(--accent)">
+    <label for="input-fav-check" style="font-size:14px;cursor:pointer">⭐ お気に入りに追加</label>
+  </div>
+  <button class="btn-primary" onclick="addMeal()">追加する</button>
+</div>
+
+<!-- EXERCISE TAB -->
+<div id="modal-exercise" style="display:none">
+  <div id="ex-fav-quick" style="margin-bottom:16px"></div>
+  <div class="form-group">
+    <label class="form-label">運動名</label>
+    <input type="text" class="form-input" id="input-ex-name" placeholder="例：ウォーキング30分">
+  </div>
+  <div class="form-group">
+    <label class="form-label">消費カロリー（kcal）</label>
+    <input type="number" class="form-input" id="input-ex-cal" placeholder="例：150">
+  </div>
+  <div class="form-group" style="display:flex;align-items:center;gap:10px">
+    <input type="checkbox" id="input-ex-fav-check" style="width:18px;height:18px;accent-color:var(--accent)">
+    <label for="input-ex-fav-check" style="font-size:14px;cursor:pointer">⭐ お気に入りに追加</label>
+  </div>
+  <button class="btn-primary" onclick="addExercise()">追加する</button>
+</div>
+```
+
   </div>
 </div>
 
@@ -779,12 +825,23 @@
 const KEY_RECORDS = 'ct_records';
 const KEY_GOAL = 'ct_goal';
 const KEY_FAVS = 'ct_favs';
+const KEY_EX_FAVS = 'ct_ex_favs';
+const KEY_GYM = 'ct_gym';
+
+function getGym() { try { return JSON.parse(localStorage.getItem(KEY_GYM) || '{}'); } catch(e) { return {}; } }
+function saveGym(g) { localStorage.setItem(KEY_GYM, JSON.stringify(g)); }
+function getGymFee() { return parseInt(localStorage.getItem('ct_gym_fee') || '7700'); }
+function saveGymFee() { const v = parseInt(document.getElementById('gym-fee-input').value); if(v>0) localStorage.setItem('ct_gym_fee', v); }
+function getGymGoal() { return parseInt(localStorage.getItem('ct_gym_goal') || '20'); }
+function saveGymGoal() { const v = parseInt(document.getElementById('gym-goal-input').value); if(v>0) localStorage.setItem('ct_gym_goal', v); }
 
 function getRecords() { try { return JSON.parse(localStorage.getItem(KEY_RECORDS) || '{}'); } catch(e) { return {}; } }
 function saveRecords(r) { localStorage.setItem(KEY_RECORDS, JSON.stringify(r)); }
 function getGoal() { return parseInt(localStorage.getItem(KEY_GOAL) || '2000'); }
 function getFavs() { try { return JSON.parse(localStorage.getItem(KEY_FAVS) || '[]'); } catch(e) { return []; } }
 function saveFavs(f) { localStorage.setItem(KEY_FAVS, JSON.stringify(f)); }
+function getExFavs() { try { return JSON.parse(localStorage.getItem(KEY_EX_FAVS) || '[]'); } catch(e) { return []; } }
+function saveExFavs(f) { localStorage.setItem(KEY_EX_FAVS, JSON.stringify(f)); }
 
 function todayKey() {
   const d = new Date();
@@ -857,6 +914,9 @@ function renderToday() {
   const foodPct = goal > 0 ? Math.min(totalFood / goal * 100, 100) : 0;
   document.getElementById('pct-food').style.width = foodPct + '%';
 
+  // Gym card
+  renderGymCard();
+
   // Streak
   const streak = calcStreak();
   document.getElementById('streak-title').textContent = streak > 0 ? `${streak}日連続記録中！` : '今日から記録スタート！';
@@ -903,6 +963,48 @@ function renderToday() {
   }
 }
 
+function renderGymCard() {
+  const key = todayKey();
+  const gym = getGym();
+  const visited = gym[key] === true;
+  const el = document.getElementById('gym-card');
+  el.innerHTML = `
+    <div class="food-item" style="justify-content:space-between">
+      <div>
+        <div class="food-name">${visited ? '✅ 今日はジムに行った！' : '今日ジムに行きましたか？'}</div>
+        <div class="food-tag">${gymMonthCount()}回 / 今月</div>
+      </div>
+      <button onclick="toggleGym()" style="
+        background:${visited ? 'var(--surface2)' : 'linear-gradient(135deg,var(--accent),var(--accent2))'};
+        border:1px solid var(--border);
+        border-radius:10px;
+        padding:8px 16px;
+        color:${visited ? 'var(--muted)' : 'white'};
+        font-family:'Syne',sans-serif;
+        font-weight:700;
+        font-size:14px;
+        cursor:pointer;
+      ">${visited ? '取消' : '行った！'}</button>
+    </div>
+  `;
+}
+
+function toggleGym() {
+  const key = todayKey();
+  const gym = getGym();
+  gym[key] = !gym[key];
+  saveGym(gym);
+  renderGymCard();
+  if (document.getElementById('page-stats').classList.contains('active')) renderStats();
+}
+
+function gymMonthCount() {
+  const gym = getGym();
+  const now = new Date();
+  const prefix = `${now.getFullYear()}-${String(now.getMonth()+1).padStart(2,'0')}`;
+  return Object.keys(gym).filter(k => k.startsWith(prefix) && gym[k]).length;
+}
+
 function calcStreak() {
   const records = getRecords();
   let streak = 0;
@@ -936,8 +1038,11 @@ function deleteExercise(i) {
 // ── MODAL ──
 function openModal() {
   document.getElementById('modal-overlay').classList.add('open');
-  document.getElementById('input-date').value = todayKey();
+  const key = todayKey();
+  document.getElementById('input-date').value = key;
+  document.getElementById('input-gym-check').checked = getGym()[key] === true;
   renderFavQuick();
+  renderExFavQuick();
 }
 
 function closeModal() {
@@ -947,6 +1052,20 @@ function closeModal() {
   document.getElementById('input-fav-check').checked = false;
   document.getElementById('input-ex-name').value = '';
   document.getElementById('input-ex-cal').value = '';
+  document.getElementById('input-ex-fav-check').checked = false;
+  document.getElementById('input-gym-check').checked = false;
+}
+
+function updateGymCheck() {
+  const date = document.getElementById('input-date').value;
+  document.getElementById('input-gym-check').checked = getGym()[date] === true;
+}
+
+function saveGymFromModal() {
+  const date = document.getElementById('input-date').value || todayKey();
+  const gym = getGym();
+  gym[date] = document.getElementById('input-gym-check').checked;
+  saveGym(gym);
 }
 
 function closeModalIfOutside(e) {
@@ -998,8 +1117,28 @@ function addMeal() {
     }
   }
 
+  saveGymFromModal();
   closeModal();
   renderToday();
+}
+
+function renderExFavQuick() {
+  const favs = getExFavs();
+  const el = document.getElementById('ex-fav-quick');
+  if (favs.length === 0) { el.innerHTML = ''; return; }
+  el.innerHTML = `<div class="fav-section-title">⭐ お気に入りから選ぶ</div>
+    <div class="fav-grid">${favs.map((f,i) => `
+      <button class="fav-chip" onclick="selectExFav(${i})">
+        <span class="f-name">${esc(f.name)}</span>
+        <span class="f-cal">-${f.cal} kcal</span>
+      </button>
+    `).join('')}</div>`;
+}
+
+function selectExFav(i) {
+  const f = getExFavs()[i];
+  document.getElementById('input-ex-name').value = f.name;
+  document.getElementById('input-ex-cal').value = f.cal;
 }
 
 function addExercise() {
@@ -1013,6 +1152,15 @@ function addExercise() {
   r[date].exercise.push({ name, cal });
   saveRecords(r);
 
+  if (document.getElementById('input-ex-fav-check').checked) {
+    const favs = getExFavs();
+    if (!favs.find(f => f.name === name)) {
+      favs.push({ name, cal });
+      saveExFavs(favs);
+    }
+  }
+
+  saveGymFromModal();
   closeModal();
   renderToday();
 }
@@ -1063,12 +1211,70 @@ function calNav(dir) {
 function showCalDay(key, day) {
   document.querySelectorAll('.cal-day').forEach(el => el.classList.remove('selected'));
   event.currentTarget.classList.add('selected');
+  showCalDayByKey(key, day);
+}
 
+function showCalDay_unused(key, day) {
+
+  // Gym toggle
+  const gym = getGym();
+  const gymVisited = gym[key] === true;
+  html += `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
+      <span style="font-size:14px">🏋️ ジム</span>
+      <button onclick="toggleGymDate('${key}')" style="
+        background:${gymVisited ? 'var(--surface2)' : 'linear-gradient(135deg,var(--accent),var(--accent2))'};
+        border:1px solid var(--border);
+        border-radius:10px;
+        padding:6px 14px;
+        color:${gymVisited ? 'var(--muted)' : 'white'};
+        font-family:'Syne',sans-serif;
+        font-weight:700;
+        font-size:13px;
+        cursor:pointer;
+      ">${gymVisited ? '✅ 行った！' : '行った？'}</button>
+    </div>
+  `;
+
+  detail.innerHTML = html;
+  detail.style.display = 'block';
+}
+
+function toggleGymDate(key) {
+  const gym = getGym();
+  gym[key] = !gym[key];
+  saveGym(gym);
+  // Re-render the day detail
+  const parts = key.split('-');
+  showCalDayByKey(key, parseInt(parts[2]));
+  renderToday();
+}
+
+function showCalDayByKey(key, day) {
   const rec = getRecords()[key];
   const detail = document.getElementById('cal-detail');
+  const parts = key.split('-');
+  const month = parseInt(parts[1]);
 
   if (!rec || (rec.meals.length === 0 && rec.exercise.length === 0)) {
-    detail.innerHTML = `<div class="cal-detail-title">${calMonth+1}月${day}日</div><div style="color:var(--muted);font-size:13px">記録なし</div>`;
+    const gym = getGym();
+    const gymVisited = gym[key] === true;
+    let html = `<div class="cal-detail-title">${month}月${day}日</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+        <span style="font-size:14px">🏋️ ジム</span>
+        <button onclick="toggleGymDate('${key}')" style="
+          background:${gymVisited ? 'var(--surface2)' : 'linear-gradient(135deg,var(--accent),var(--accent2))'};
+          border:1px solid var(--border);
+          border-radius:10px;
+          padding:6px 14px;
+          color:${gymVisited ? 'var(--muted)' : 'white'};
+          font-family:'Syne',sans-serif;
+          font-weight:700;
+          font-size:13px;
+          cursor:pointer;
+        ">${gymVisited ? '✅ 行った！' : '行った？'}</button>
+      </div>`;
+    detail.innerHTML = html;
     detail.style.display = 'block';
     return;
   }
@@ -1076,8 +1282,7 @@ function showCalDay(key, day) {
   const totalFood = rec.meals.reduce((s, m) => s + m.cal, 0);
   const totalEx = rec.exercise.reduce((s, e) => s + e.cal, 0);
   const net = totalFood - totalEx;
-
-  let html = `<div class="cal-detail-title">${calMonth+1}月${day}日 ─ 正味 ${net.toLocaleString()} kcal</div>`;
+  let html = `<div class="cal-detail-title">${month}月${day}日 ─ 正味 ${net.toLocaleString()} kcal</div>`;
 
   if (rec.meals.length > 0) {
     html += rec.meals.map(m => `
@@ -1086,7 +1291,6 @@ function showCalDay(key, day) {
         <span style="font-family:'Syne',sans-serif;color:var(--accent);font-size:14px;font-weight:700">${m.cal} kcal</span>
       </div>`).join('');
   }
-
   if (rec.exercise.length > 0) {
     html += rec.exercise.map(e => `
       <div style="display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid var(--border)">
@@ -1094,6 +1298,25 @@ function showCalDay(key, day) {
         <span style="font-family:'Syne',sans-serif;color:var(--green);font-size:14px;font-weight:700">-${e.cal} kcal</span>
       </div>`).join('');
   }
+
+  const gym = getGym();
+  const gymVisited = gym[key] === true;
+  html += `
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0">
+      <span style="font-size:14px">🏋️ ジム</span>
+      <button onclick="toggleGymDate('${key}')" style="
+        background:${gymVisited ? 'var(--surface2)' : 'linear-gradient(135deg,var(--accent),var(--accent2))'};
+        border:1px solid var(--border);
+        border-radius:10px;
+        padding:6px 14px;
+        color:${gymVisited ? 'var(--muted)' : 'white'};
+        font-family:'Syne',sans-serif;
+        font-weight:700;
+        font-size:13px;
+        cursor:pointer;
+      ">${gymVisited ? '✅ 行った！' : '行った？'}</button>
+    </div>
+  `;
 
   detail.innerHTML = html;
   detail.style.display = 'block';
@@ -1121,6 +1344,11 @@ function renderStats() {
 
   const avg = days > 0 ? Math.round((totalFood - totalEx) / days) : 0;
   const streak = calcStreak();
+  const gymFee = getGymFee();
+  const gymCount = gymMonthCount();
+  const now = new Date();
+  const daysInMonth = new Date(now.getFullYear(), now.getMonth()+1, 0).getDate();
+  const gymGoalPct = Math.round(gymCount / daysInMonth * 100);
 
   document.getElementById('stats-grid').innerHTML = `
     <div class="stat-card">
@@ -1153,9 +1381,23 @@ function renderStats() {
       <div class="stat-value">-${totalEx.toLocaleString()}</div>
       <div class="stat-unit">kcal 合計 🏃</div>
     </div>
+    <div class="stat-card">
+      <div class="stat-label">今月のジム回数</div>
+      <div class="stat-value">${gymCount}</div>
+      <div class="stat-unit">回 🏋️</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-label">今月の達成率</div>
+      <div class="stat-value">${gymGoalPct}</div>
+      <div class="stat-unit">% (${gymCount}回 / ${daysInMonth}日)</div>
+    </div>
+    <div class="stat-card full">
+      <div class="stat-label">1回あたりのジム費用</div>
+      <div class="stat-value">${gymCount > 0 ? Math.round(gymFee / gymCount).toLocaleString() : '—'}</div>
+      <div class="stat-unit">円 / 回（月額${gymFee.toLocaleString()}円）</div>
+    </div>
   `;
 }
-
 
 // ── FAVORITES ──
 function renderFavs() {
@@ -1188,6 +1430,8 @@ function deleteFav(i) {
 // ── SETTINGS ──
 function renderSettings() {
   document.getElementById('goal-input').value = getGoal();
+  document.getElementById('gym-fee-input').value = getGymFee();
+  document.getElementById('gym-goal-input').value = getGymGoal();
 }
 
 function saveGoal() {
@@ -1203,5 +1447,6 @@ function esc(s) {
 // ── INIT ──
 renderToday();
 </script>
+
 </body>
 </html>
