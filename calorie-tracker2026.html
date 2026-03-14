@@ -1214,31 +1214,7 @@ function showCalDay(key, day) {
   showCalDayByKey(key, day);
 }
 
-function showCalDay_unused(key, day) {
 
-  // Gym toggle
-  const gym = getGym();
-  const gymVisited = gym[key] === true;
-  html += `
-    <div style="display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid var(--border)">
-      <span style="font-size:14px">🏋️ ジム</span>
-      <button onclick="toggleGymDate('${key}')" style="
-        background:${gymVisited ? 'var(--surface2)' : 'linear-gradient(135deg,var(--accent),var(--accent2))'};
-        border:1px solid var(--border);
-        border-radius:10px;
-        padding:6px 14px;
-        color:${gymVisited ? 'var(--muted)' : 'white'};
-        font-family:'Syne',sans-serif;
-        font-weight:700;
-        font-size:13px;
-        cursor:pointer;
-      ">${gymVisited ? '✅ 行った！' : '行った？'}</button>
-    </div>
-  `;
-
-  detail.innerHTML = html;
-  detail.style.display = 'block';
-}
 
 function toggleGymDate(key) {
   const gym = getGym();
@@ -1431,7 +1407,6 @@ function deleteFav(i) {
 function renderSettings() {
   document.getElementById('goal-input').value = getGoal();
   document.getElementById('gym-fee-input').value = getGymFee();
-  document.getElementById('gym-goal-input').value = getGymGoal();
 }
 
 function saveGoal() {
