@@ -1148,8 +1148,14 @@ function renderStats() {
       <div class="stat-value">${(totalFood - totalEx).toLocaleString()}</div>
       <div class="stat-unit">kcal 合計</div>
     </div>
+    <div class="stat-card full">
+      <div class="stat-label">累計運動消費カロリー</div>
+      <div class="stat-value">-${totalEx.toLocaleString()}</div>
+      <div class="stat-unit">kcal 合計 🏃</div>
+    </div>
   `;
 }
+
 
 // ── FAVORITES ──
 function renderFavs() {
