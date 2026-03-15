@@ -734,9 +734,23 @@
       </div>
 
     </div>
-    <div style="margin: 20px 20px 0; color: var(--muted); font-size: 13px; line-height: 1.6;">
-      すべてのデータはこのデバイスのブラウザに保存されています。<br>
-      ブラウザのデータを消去するとデータが失われます。
+    <div style="margin: 20px 20px 0; display:flex; flex-direction:column; gap:10px;">
+      <button onclick="exportData()" style="
+        width:100%;padding:14px;border:none;border-radius:12px;
+        background:linear-gradient(135deg,var(--accent),var(--accent2));
+        color:white;font-family:'Syne',sans-serif;font-size:15px;font-weight:700;cursor:pointer;">
+        📤 データをエクスポート
+      </button>
+      <label style="
+        width:100%;padding:14px;border:1px solid var(--border);border-radius:12px;
+        background:var(--surface2);color:var(--text);font-family:'Syne',sans-serif;
+        font-size:15px;font-weight:700;cursor:pointer;text-align:center;display:block;">
+        📥 データをインポート
+        <input type="file" accept=".json" onchange="importData(event)" style="display:none;">
+      </label>
+    </div>
+    <div style="margin: 12px 20px 0; color: var(--muted); font-size: 12px; line-height: 1.6;">
+      エクスポートでデータをファイルに保存できます。PWAを削除する前に必ずエクスポートしてください。
     </div>
   </div>
 
@@ -1491,6 +1505,49 @@ function saveGoal() {
 // ── UTIL ──
 function esc(s) {
   return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// ── EXPORT / IMPORT ──
+function exportData() {
+  const data = {
+    records: getRecords(),
+    gym: getGym(),
+    favs: getFavs(),
+    exFavs: getExFavs(),
+    goal: getGoal(),
+    gymFee: getGymFee(),
+    exportedAt: new Date().toISOString()
+  };
+  const blob = new Blob([JSON.stringify(data, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `calorie-backup-${new Date().toISOString().slice(0,10)}.json`;
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function importData(event) {
+  const file = event.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = (e) => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (data.records) saveRecords(data.records);
+      if (data.gym) saveGym(data.gym);
+      if (data.favs) saveFavs(data.favs);
+      if (data.exFavs) saveExFavs(data.exFavs);
+      if (data.goal) localStorage.setItem(KEY_GOAL, data.goal);
+      if (data.gymFee) localStorage.setItem('ct_gym_fee', data.gymFee);
+      alert('インポート完了しました！');
+      renderToday();
+      renderSettings();
+    } catch(err) {
+      alert('ファイルが正しくありません');
+    }
+  };
+  reader.readAsText(file);
 }
 
 // ── INIT ──
