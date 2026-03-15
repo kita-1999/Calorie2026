@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="ja">
 <head>
 <meta charset="UTF-8">
@@ -25,550 +24,548 @@
     --radius: 16px;
   }
 
-- { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-
-body {
-background: var(–bg);
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-min-height: 100dvh;
-max-width: 430px;
-margin: 0 auto;
-position: relative;
-overflow-x: hidden;
-}
-
-h1, h2, h3 { font-family: ‘Syne’, sans-serif; }
-
-/* ── APP SHELL ── */
-#app { padding-bottom: 80px; min-height: 100dvh; }
-
-/* ── NAV ── */
-nav {
-position: fixed;
-bottom: 0; left: 50%;
-transform: translateX(-50%);
-width: 100%; max-width: 430px;
-background: rgba(255,255,255,0.95);
-backdrop-filter: blur(20px);
-border-top: 1px solid var(–border);
-display: flex;
-z-index: 100;
-padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
-}
-
-.nav-btn {
-flex: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
-gap: 4px;
-padding: 6px 0;
-background: none;
-border: none;
-color: var(–muted);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 10px;
-cursor: pointer;
-transition: color .2s;
-}
-
-.nav-btn.active { color: var(–accent); }
-.nav-btn svg { width: 22px; height: 22px; }
-
-/* ── HEADER ── */
-.page-header {
-padding: 56px 20px 20px;
-background: linear-gradient(180deg, var(–surface) 0%, transparent 100%);
-}
-
-.page-title {
-font-size: 28px;
-font-weight: 800;
-letter-spacing: -0.5px;
-}
-
-.page-subtitle { font-size: 14px; color: var(–muted); margin-top: 4px; }
-
-/* ── TODAY ── */
-.ring-card {
-margin: 0 20px;
-background: var(–surface);
-border-radius: 24px;
-padding: 28px;
-display: flex;
-align-items: center;
-gap: 24px;
-border: 1px solid var(–border);
-}
-
-.ring-wrap { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
-
-.ring-wrap svg { transform: rotate(-90deg); }
-
-.ring-bg { fill: none; stroke: #e8e8f0; stroke-width: 10; }
-.ring-fg { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
-
-.ring-label {
-position: absolute;
-top: 50%; left: 50%;
-transform: translate(-50%,-50%);
-text-align: center;
-}
-
-.ring-cal { font-family: ‘Syne’, sans-serif; font-size: 22px; font-weight: 700; line-height: 1; }
-.ring-unit { font-size: 10px; color: var(–muted); margin-top: 2px; }
-
-.ring-info { flex: 1; }
-.ring-info .label { font-size: 12px; color: var(–muted); margin-bottom: 4px; }
-.ring-info .value { font-family: ‘Syne’, sans-serif; font-size: 18px; font-weight: 700; }
-
-.info-row { margin-bottom: 12px; }
-.info-row:last-child { margin-bottom: 0; }
-
-.pct-bar {
-height: 4px;
-background: var(–surface2);
-border-radius: 2px;
-margin-top: 6px;
-overflow: hidden;
-}
-
-.pct-fill {
-height: 100%;
-border-radius: 2px;
-background: linear-gradient(90deg, var(–accent), var(–accent2));
-transition: width .6s cubic-bezier(.4,0,.2,1);
-}
-
-/* ── SECTION ── */
-.section {
-margin: 20px 20px 0;
-}
-
-.section-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 12px;
-}
-
-.section-title {
-font-family: ‘Syne’, sans-serif;
-font-size: 16px;
-font-weight: 700;
-}
-
-.btn-text {
-background: none;
-border: none;
-color: var(–accent);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 13px;
-cursor: pointer;
-}
-
-/* ── FOOD LIST ── */
-.food-item {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 14px 16px;
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin-bottom: 8px;
-}
-
-.food-name { font-size: 15px; font-weight: 500; }
-.food-tag { font-size: 11px; color: var(–muted); margin-top: 2px; }
-.food-cal { font-family: ‘Syne’, sans-serif; font-size: 18px; font-weight: 700; color: var(–accent); }
-.food-cal span { font-size: 11px; font-weight: 400; color: var(–muted); }
-
-.food-del {
-background: none;
-border: none;
-color: var(–muted);
-cursor: pointer;
-padding: 4px;
-border-radius: 6px;
-transition: color .2s;
-margin-left: 8px;
-}
-
-.food-del:active { color: #ff4a4a; }
-
-.empty-state {
-text-align: center;
-color: var(–muted);
-padding: 32px 0;
-font-size: 14px;
-}
-
-/* ── FAB ── */
-.fab {
-position: fixed;
-bottom: calc(80px + env(safe-area-inset-bottom));
-right: 20px;
-width: 56px; height: 56px;
-border-radius: 50%;
-background: linear-gradient(135deg, var(–accent), var(–accent2));
-border: none;
-color: white;
-font-size: 28px;
-cursor: pointer;
-box-shadow: 0 4px 20px rgba(255,107,74,.4);
-display: flex;
-align-items: center;
-justify-content: center;
-transition: transform .15s;
-z-index: 90;
-}
-
-.fab:active { transform: scale(0.92); }
-
-/* ── MODAL ── */
-.modal-overlay {
-position: fixed;
-inset: 0;
-background: rgba(0,0,0,.4);
-backdrop-filter: blur(8px);
-z-index: 200;
-display: flex;
-align-items: flex-end;
-opacity: 0;
-pointer-events: none;
-transition: opacity .25s;
-}
-
-.modal-overlay.open {
-opacity: 1;
-pointer-events: all;
-}
-
-.modal {
-background: var(–surface);
-border-radius: 24px 24px 0 0;
-width: 100%;
-max-width: 430px;
-margin: 0 auto;
-padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
-transform: translateY(100%);
-transition: transform .3s cubic-bezier(.4,0,.2,1);
-}
-
-.modal-overlay.open .modal {
-transform: translateY(0);
-}
-
-.modal-handle {
-width: 40px; height: 4px;
-background: var(–border);
-border-radius: 2px;
-margin: 0 auto 20px;
-}
-
-.modal-title {
-font-family: ‘Syne’, sans-serif;
-font-size: 20px;
-font-weight: 700;
-margin-bottom: 20px;
-}
-
-/* ── TABS ── */
-.tabs {
-display: flex;
-background: var(–surface2);
-border-radius: 10px;
-padding: 4px;
-margin-bottom: 20px;
-}
-
-.tab {
-flex: 1;
-padding: 8px;
-border: none;
-background: none;
-color: var(–muted);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 14px;
-border-radius: 7px;
-cursor: pointer;
-transition: all .2s;
-}
-
-.tab.active {
-background: var(–surface);
-color: var(–text);
-font-weight: 500;
-}
-
-/* ── FORM ── */
-.form-group { margin-bottom: 16px; }
-.form-label { font-size: 12px; color: var(–muted); margin-bottom: 6px; display: block; }
-
-.form-input {
-width: 100%;
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 12px 14px;
-color: var(–text);
-font-family: ‘DM Sans’, sans-serif;
-font-size: 16px;
-outline: none;
-transition: border-color .2s;
-}
-
-.form-input:focus { border-color: var(–accent); }
-
-.btn-primary {
-width: 100%;
-background: linear-gradient(135deg, var(–accent), var(–accent2));
-border: none;
-border-radius: 12px;
-padding: 14px;
-color: white;
-font-family: ‘Syne’, sans-serif;
-font-size: 16px;
-font-weight: 700;
-cursor: pointer;
-transition: opacity .2s;
-}
-
-.btn-primary:active { opacity: .8; }
-
-/* ── FAVORITES ── */
-.fav-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 8px;
-margin-bottom: 16px;
-}
-
-.fav-chip {
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 10px;
-padding: 10px 12px;
-cursor: pointer;
-display: flex;
-flex-direction: column;
-gap: 2px;
-transition: border-color .2s;
-text-align: left;
-}
-
-.fav-chip:active { border-color: var(–accent); }
-.fav-chip .f-name { font-size: 13px; font-weight: 500; }
-.fav-chip .f-cal { font-size: 12px; color: var(–accent); font-family: ‘Syne’, sans-serif; font-weight: 700; }
-
-/* ── CALENDAR ── */
-.cal-header {
-display: flex;
-align-items: center;
-justify-content: space-between;
-margin: 0 20px 16px;
-}
-
-.cal-nav {
-background: var(–surface);
-border: 1px solid var(–border);
-color: var(–text);
-width: 36px; height: 36px;
-border-radius: 10px;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-}
-
-.cal-month {
-font-family: ‘Syne’, sans-serif;
-font-size: 18px;
-font-weight: 700;
-}
-
-.cal-grid {
-margin: 0 20px;
-display: grid;
-grid-template-columns: repeat(7, 1fr);
-gap: 4px;
-}
-
-.cal-day-label {
-text-align: center;
-font-size: 11px;
-color: var(–muted);
-padding: 4px 0 8px;
-}
-
-.cal-day {
-aspect-ratio: 1;
-display: flex;
-flex-direction: column;
-align-items: center;
-justify-content: center;
-border-radius: 10px;
-cursor: pointer;
-font-size: 14px;
-transition: background .15s;
-gap: 2px;
-}
-
-.cal-day:empty { cursor: default; }
-.cal-day.has-data { background: var(–surface); }
-.cal-day.today { background: rgba(255,107,74,.15); color: var(–accent); font-weight: 700; }
-.cal-day.selected { background: var(–accent); color: white; }
-.cal-day .cal-dot { width: 4px; height: 4px; border-radius: 50%; background: var(–green); }
-.cal-day.selected .cal-dot { background: white; }
-
-.cal-detail {
-margin: 16px 20px 0;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 16px;
-}
-
-.cal-detail-title {
-font-family: ‘Syne’, sans-serif;
-font-size: 14px;
-font-weight: 700;
-margin-bottom: 12px;
-color: var(–muted);
-}
-
-/* ── STATS ── */
-.stats-grid {
-display: grid;
-grid-template-columns: 1fr 1fr;
-gap: 12px;
-margin: 0 20px;
-}
-
-.stat-card {
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-padding: 18px 16px;
-}
-
-.stat-label { font-size: 12px; color: var(–muted); margin-bottom: 6px; }
-
-.stat-value {
-font-family: ‘Syne’, sans-serif;
-font-size: 28px;
-font-weight: 800;
-line-height: 1;
-background: linear-gradient(135deg, var(–accent), var(–accent2));
--webkit-background-clip: text;
--webkit-text-fill-color: transparent;
-}
-
-.stat-unit { font-size: 11px; color: var(–muted); margin-top: 4px; }
-
-.stat-card.full {
-grid-column: 1 / -1;
-}
-
-/* ── SETTINGS ── */
-.settings-card {
-margin: 0 20px;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-overflow: hidden;
-}
-
-.setting-row {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 16px;
-border-bottom: 1px solid var(–border);
-}
-
-.setting-row:last-child { border-bottom: none; }
-.setting-row-label { font-size: 15px; }
-.setting-row-sub { font-size: 12px; color: var(–muted); margin-top: 2px; }
-
-.setting-input {
-background: var(–surface2);
-border: 1px solid var(–border);
-border-radius: 8px;
-padding: 6px 10px;
-color: var(–text);
-font-family: ‘Syne’, sans-serif;
-font-size: 16px;
-font-weight: 700;
-width: 100px;
-text-align: right;
-outline: none;
-}
-
-.setting-input:focus { border-color: var(–accent); }
-
-/* page transition */
-.page { display: none; }
-.page.active { display: block; animation: fadeIn .2s ease; }
-
-@keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-
-.badge {
-display: inline-block;
-padding: 2px 8px;
-border-radius: 20px;
-font-size: 11px;
-font-weight: 600;
-background: rgba(255,107,74,.15);
-color: var(–accent);
-}
-
-.badge.green { background: rgba(74,222,128,.15); color: var(–green); }
-
-.fav-section-title {
-font-size: 12px;
-color: var(–muted);
-margin-bottom: 10px;
-padding-top: 4px;
-}
-
-.fav-item-row {
-display: flex;
-align-items: center;
-justify-content: space-between;
-padding: 12px 16px;
-background: var(–surface);
-border: 1px solid var(–border);
-border-radius: var(–radius);
-margin-bottom: 8px;
-}
-
-.no-fav { color: var(–muted); font-size: 13px; text-align: center; padding: 20px 0; }
-
-.streak-card {
-margin: 12px 20px 0;
-background: linear-gradient(135deg, rgba(255,90,54,.07), rgba(255,159,28,.07));
-border: 1px solid rgba(255,90,54,.15);
-border-radius: var(–radius);
-padding: 16px;
-display: flex;
-align-items: center;
-gap: 12px;
-}
-
-.streak-icon { font-size: 32px; }
-.streak-text .s-title { font-family: ‘Syne’, sans-serif; font-size: 14px; font-weight: 700; }
-.streak-text .s-sub { font-size: 12px; color: var(–muted); margin-top: 2px; }
+  * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100dvh;
+    max-width: 430px;
+    margin: 0 auto;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  h1, h2, h3 { font-family: 'Syne', sans-serif; }
+
+  /* ── APP SHELL ── */
+  #app { padding-bottom: 80px; min-height: 100dvh; }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed;
+    bottom: 0; left: 50%;
+    transform: translateX(-50%);
+    width: 100%; max-width: 430px;
+    background: rgba(255,255,255,0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--border);
+    display: flex;
+    z-index: 100;
+    padding: 8px 0 calc(8px + env(safe-area-inset-bottom));
+  }
+
+  .nav-btn {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    padding: 6px 0;
+    background: none;
+    border: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 10px;
+    cursor: pointer;
+    transition: color .2s;
+  }
+
+  .nav-btn.active { color: var(--accent); }
+  .nav-btn svg { width: 22px; height: 22px; }
+
+  /* ── HEADER ── */
+  .page-header {
+    padding: 56px 20px 20px;
+    background: linear-gradient(180deg, var(--surface) 0%, transparent 100%);
+  }
+
+  .page-title {
+    font-size: 28px;
+    font-weight: 800;
+    letter-spacing: -0.5px;
+  }
+
+  .page-subtitle { font-size: 14px; color: var(--muted); margin-top: 4px; }
+
+  /* ── TODAY ── */
+  .ring-card {
+    margin: 0 20px;
+    background: var(--surface);
+    border-radius: 24px;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    gap: 24px;
+    border: 1px solid var(--border);
+  }
+
+  .ring-wrap { position: relative; width: 110px; height: 110px; flex-shrink: 0; }
+
+  .ring-wrap svg { transform: rotate(-90deg); }
+
+  .ring-bg { fill: none; stroke: #e8e8f0; stroke-width: 10; }
+  .ring-fg { fill: none; stroke-width: 10; stroke-linecap: round; transition: stroke-dashoffset .6s cubic-bezier(.4,0,.2,1); }
+
+  .ring-label {
+    position: absolute;
+    top: 50%; left: 50%;
+    transform: translate(-50%,-50%);
+    text-align: center;
+  }
+
+  .ring-cal { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 700; line-height: 1; }
+  .ring-unit { font-size: 10px; color: var(--muted); margin-top: 2px; }
+
+  .ring-info { flex: 1; }
+  .ring-info .label { font-size: 12px; color: var(--muted); margin-bottom: 4px; }
+  .ring-info .value { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; }
+
+  .info-row { margin-bottom: 12px; }
+  .info-row:last-child { margin-bottom: 0; }
+
+  .pct-bar {
+    height: 4px;
+    background: var(--surface2);
+    border-radius: 2px;
+    margin-top: 6px;
+    overflow: hidden;
+  }
+
+  .pct-fill {
+    height: 100%;
+    border-radius: 2px;
+    background: linear-gradient(90deg, var(--accent), var(--accent2));
+    transition: width .6s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* ── SECTION ── */
+  .section {
+    margin: 20px 20px 0;
+  }
+
+  .section-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 12px;
+  }
+
+  .section-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+  }
+
+  .btn-text {
+    background: none;
+    border: none;
+    color: var(--accent);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  /* ── FOOD LIST ── */
+  .food-item {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 8px;
+  }
+
+  .food-name { font-size: 15px; font-weight: 500; }
+  .food-tag { font-size: 11px; color: var(--muted); margin-top: 2px; }
+  .food-cal { font-family: 'Syne', sans-serif; font-size: 18px; font-weight: 700; color: var(--accent); }
+  .food-cal span { font-size: 11px; font-weight: 400; color: var(--muted); }
+
+  .food-del {
+    background: none;
+    border: none;
+    color: var(--muted);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 6px;
+    transition: color .2s;
+    margin-left: 8px;
+  }
+
+  .food-del:active { color: #ff4a4a; }
+
+  .empty-state {
+    text-align: center;
+    color: var(--muted);
+    padding: 32px 0;
+    font-size: 14px;
+  }
+
+  /* ── FAB ── */
+  .fab {
+    position: fixed;
+    bottom: calc(80px + env(safe-area-inset-bottom));
+    right: 20px;
+    width: 56px; height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    color: white;
+    font-size: 28px;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(255,107,74,.4);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: transform .15s;
+    z-index: 90;
+  }
+
+  .fab:active { transform: scale(0.92); }
+
+  /* ── MODAL ── */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,.4);
+    backdrop-filter: blur(8px);
+    z-index: 200;
+    display: flex;
+    align-items: flex-end;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .25s;
+  }
+
+  .modal-overlay.open {
+    opacity: 1;
+    pointer-events: all;
+  }
+
+  .modal {
+    background: var(--surface);
+    border-radius: 24px 24px 0 0;
+    width: 100%;
+    max-width: 430px;
+    margin: 0 auto;
+    padding: 24px 20px calc(24px + env(safe-area-inset-bottom));
+    transform: translateY(100%);
+    transition: transform .3s cubic-bezier(.4,0,.2,1);
+  }
+
+  .modal-overlay.open .modal {
+    transform: translateY(0);
+  }
+
+  .modal-handle {
+    width: 40px; height: 4px;
+    background: var(--border);
+    border-radius: 2px;
+    margin: 0 auto 20px;
+  }
+
+  .modal-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 20px;
+  }
+
+  /* ── TABS ── */
+  .tabs {
+    display: flex;
+    background: var(--surface2);
+    border-radius: 10px;
+    padding: 4px;
+    margin-bottom: 20px;
+  }
+
+  .tab {
+    flex: 1;
+    padding: 8px;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 14px;
+    border-radius: 7px;
+    cursor: pointer;
+    transition: all .2s;
+  }
+
+  .tab.active {
+    background: var(--surface);
+    color: var(--text);
+    font-weight: 500;
+  }
+
+  /* ── FORM ── */
+  .form-group { margin-bottom: 16px; }
+  .form-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; display: block; }
+
+  .form-input {
+    width: 100%;
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 14px;
+    color: var(--text);
+    font-family: 'DM Sans', sans-serif;
+    font-size: 16px;
+    outline: none;
+    transition: border-color .2s;
+  }
+
+  .form-input:focus { border-color: var(--accent); }
+
+  .btn-primary {
+    width: 100%;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    border: none;
+    border-radius: 12px;
+    padding: 14px;
+    color: white;
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: opacity .2s;
+  }
+
+  .btn-primary:active { opacity: .8; }
+
+  /* ── FAVORITES ── */
+  .fav-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-bottom: 16px;
+  }
+
+  .fav-chip {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    transition: border-color .2s;
+    text-align: left;
+  }
+
+  .fav-chip:active { border-color: var(--accent); }
+  .fav-chip .f-name { font-size: 13px; font-weight: 500; }
+  .fav-chip .f-cal { font-size: 12px; color: var(--accent); font-family: 'Syne', sans-serif; font-weight: 700; }
+
+  /* ── CALENDAR ── */
+  .cal-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin: 0 20px 16px;
+  }
+
+  .cal-nav {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    width: 36px; height: 36px;
+    border-radius: 10px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .cal-month {
+    font-family: 'Syne', sans-serif;
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .cal-grid {
+    margin: 0 20px;
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+  }
+
+  .cal-day-label {
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    padding: 4px 0 8px;
+  }
+
+  .cal-day {
+    aspect-ratio: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background .15s;
+    gap: 2px;
+  }
+
+  .cal-day:empty { cursor: default; }
+  .cal-day.has-data { background: var(--surface); }
+  .cal-day.today { background: rgba(255,107,74,.15); color: var(--accent); font-weight: 700; }
+  .cal-day.selected { background: var(--accent); color: white; }
+  .cal-day .cal-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--green); }
+  .cal-day.selected .cal-dot { background: white; }
+
+  .cal-detail {
+    margin: 16px 20px 0;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 16px;
+  }
+
+  .cal-detail-title {
+    font-family: 'Syne', sans-serif;
+    font-size: 14px;
+    font-weight: 700;
+    margin-bottom: 12px;
+    color: var(--muted);
+  }
+
+  /* ── STATS ── */
+  .stats-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 0 20px;
+  }
+
+  .stat-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 18px 16px;
+  }
+
+  .stat-label { font-size: 12px; color: var(--muted); margin-bottom: 6px; }
+
+  .stat-value {
+    font-family: 'Syne', sans-serif;
+    font-size: 28px;
+    font-weight: 800;
+    line-height: 1;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  .stat-unit { font-size: 11px; color: var(--muted); margin-top: 4px; }
+
+  .stat-card.full {
+    grid-column: 1 / -1;
+  }
+
+  /* ── SETTINGS ── */
+  .settings-card {
+    margin: 0 20px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    overflow: hidden;
+  }
+
+  .setting-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+
+  .setting-row:last-child { border-bottom: none; }
+  .setting-row-label { font-size: 15px; }
+  .setting-row-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
+
+  .setting-input {
+    background: var(--surface2);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 6px 10px;
+    color: var(--text);
+    font-family: 'Syne', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    width: 100px;
+    text-align: right;
+    outline: none;
+  }
+
+  .setting-input:focus { border-color: var(--accent); }
+
+  /* page transition */
+  .page { display: none; }
+  .page.active { display: block; animation: fadeIn .2s ease; }
+
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+    background: rgba(255,107,74,.15);
+    color: var(--accent);
+  }
+
+  .badge.green { background: rgba(74,222,128,.15); color: var(--green); }
+
+  .fav-section-title {
+    font-size: 12px;
+    color: var(--muted);
+    margin-bottom: 10px;
+    padding-top: 4px;
+  }
+
+  .fav-item-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px 16px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    margin-bottom: 8px;
+  }
+
+  .no-fav { color: var(--muted); font-size: 13px; text-align: center; padding: 20px 0; }
+
+  .streak-card {
+    margin: 12px 20px 0;
+    background: linear-gradient(135deg, rgba(255,90,54,.07), rgba(255,159,28,.07));
+    border: 1px solid rgba(255,90,54,.15);
+    border-radius: var(--radius);
+    padding: 16px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  .streak-icon { font-size: 32px; }
+  .streak-text .s-title { font-family: 'Syne', sans-serif; font-size: 14px; font-weight: 700; }
+  .streak-text .s-sub { font-size: 12px; color: var(--muted); margin-top: 2px; }
 </style>
-
 </head>
 <body>
 <div id="app">
 
   <!-- TODAY PAGE -->
-
   <div class="page active" id="page-today">
     <div class="page-header">
       <div style="display:flex;align-items:center;justify-content:space-between">
@@ -580,83 +577,79 @@ gap: 12px;
       </div>
     </div>
 
-```
-<!-- Ring -->
-<div class="ring-card">
-  <div class="ring-wrap">
-    <svg viewBox="0 0 110 110" width="110" height="110">
-      <circle class="ring-bg" cx="55" cy="55" r="48"/>
-      <circle class="ring-fg" id="ring-circle" cx="55" cy="55" r="48"
-        stroke-dasharray="301.6"
-        stroke-dashoffset="301.6"
-        stroke="url(#ringGrad)"/>
-      <defs>
-        <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%" stop-color="#ff6b4a"/>
-          <stop offset="100%" stop-color="#ffb347"/>
-        </linearGradient>
-      </defs>
-    </svg>
-    <div class="ring-label">
-      <div class="ring-cal" id="ring-cal">0</div>
-      <div class="ring-unit">kcal</div>
+    <!-- Ring -->
+    <div class="ring-card">
+      <div class="ring-wrap">
+        <svg viewBox="0 0 110 110" width="110" height="110">
+          <circle class="ring-bg" cx="55" cy="55" r="48"/>
+          <circle class="ring-fg" id="ring-circle" cx="55" cy="55" r="48"
+            stroke-dasharray="301.6"
+            stroke-dashoffset="301.6"
+            stroke="url(#ringGrad)"/>
+          <defs>
+            <linearGradient id="ringGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+              <stop offset="0%" stop-color="#ff6b4a"/>
+              <stop offset="100%" stop-color="#ffb347"/>
+            </linearGradient>
+          </defs>
+        </svg>
+        <div class="ring-label">
+          <div class="ring-cal" id="ring-cal">0</div>
+          <div class="ring-unit">kcal</div>
+        </div>
+      </div>
+      <div class="ring-info">
+        <div class="info-row">
+          <div class="label">目標</div>
+          <div class="value" id="ring-goal">— kcal</div>
+        </div>
+        <div class="info-row">
+          <div class="label">🍽 食事</div>
+          <div class="value" id="ring-food">0 kcal</div>
+          <div class="pct-bar"><div class="pct-fill" id="pct-food" style="width:0%"></div></div>
+        </div>
+        <div class="info-row">
+          <div class="label">🏃 運動</div>
+          <div class="value" id="ring-exercise" style="color:var(--green)">-0 kcal</div>
+        </div>
+      </div>
     </div>
-  </div>
-  <div class="ring-info">
-    <div class="info-row">
-      <div class="label">目標</div>
-      <div class="value" id="ring-goal">— kcal</div>
+
+    <!-- Streak -->
+    <div class="streak-card" id="streak-card">
+      <div class="streak-icon">🔥</div>
+      <div class="streak-text">
+        <div class="s-title" id="streak-title">記録継続中</div>
+        <div class="s-sub" id="streak-sub">今日も記録しよう！</div>
+      </div>
     </div>
-    <div class="info-row">
-      <div class="label">🍽 食事</div>
-      <div class="value" id="ring-food">0 kcal</div>
-      <div class="pct-bar"><div class="pct-fill" id="pct-food" style="width:0%"></div></div>
+
+    <!-- Meal List -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">🍽 今日の食事</div>
+      </div>
+      <div id="today-meals"></div>
     </div>
-    <div class="info-row">
-      <div class="label">🏃 運動</div>
-      <div class="value" id="ring-exercise" style="color:var(--green)">-0 kcal</div>
+
+    <!-- Exercise List -->
+    <div class="section">
+      <div class="section-header">
+        <div class="section-title">🏃 運動</div>
+      </div>
+      <div id="today-exercise"></div>
     </div>
-  </div>
-</div>
 
-<!-- Streak -->
-<div class="streak-card" id="streak-card">
-  <div class="streak-icon">🔥</div>
-  <div class="streak-text">
-    <div class="s-title" id="streak-title">記録継続中</div>
-    <div class="s-sub" id="streak-sub">今日も記録しよう！</div>
-  </div>
-</div>
-
-<!-- Meal List -->
-<div class="section">
-  <div class="section-header">
-    <div class="section-title">🍽 今日の食事</div>
-  </div>
-  <div id="today-meals"></div>
-</div>
-
-<!-- Exercise List -->
-<div class="section">
-  <div class="section-header">
-    <div class="section-title">🏃 運動</div>
-  </div>
-  <div id="today-exercise"></div>
-</div>
-
-<!-- Gym -->
-<div class="section" style="margin-bottom:20px">
-  <div class="section-header">
-    <div class="section-title">🏋️ ジム</div>
-  </div>
-  <div id="gym-card"></div>
-</div>
-```
-
+    <!-- Gym -->
+    <div class="section" style="margin-bottom:20px">
+      <div class="section-header">
+        <div class="section-title">🏋️ ジム</div>
+      </div>
+      <div id="gym-card"></div>
+    </div>
   </div>
 
   <!-- CALENDAR PAGE -->
-
   <div class="page" id="page-calendar">
     <div class="page-header">
       <div class="page-title">カレンダー</div>
@@ -672,7 +665,6 @@ gap: 12px;
   </div>
 
   <!-- STATS PAGE -->
-
   <div class="page" id="page-stats">
     <div class="page-header">
       <div class="page-title">統計</div>
@@ -682,7 +674,6 @@ gap: 12px;
   </div>
 
   <!-- FAVORITES PAGE -->
-
   <div class="page" id="page-favorites">
     <div class="page-header">
       <div class="page-title">お気に入り</div>
@@ -694,7 +685,6 @@ gap: 12px;
   </div>
 
   <!-- SETTINGS PAGE -->
-
   <div class="page" id="page-settings">
     <div class="page-header">
       <div class="page-title">設定</div>
@@ -715,24 +705,19 @@ gap: 12px;
         <input type="number" class="setting-input" id="gym-fee-input" placeholder="7700" onchange="saveGymFee()">
       </div>
 
-```
-</div>
-<div style="margin: 20px 20px 0; color: var(--muted); font-size: 13px; line-height: 1.6;">
-  すべてのデータはこのデバイスのブラウザに保存されています。<br>
-  ブラウザのデータを消去するとデータが失われます。
-</div>
-```
-
+    </div>
+    <div style="margin: 20px 20px 0; color: var(--muted); font-size: 13px; line-height: 1.6;">
+      すべてのデータはこのデバイスのブラウザに保存されています。<br>
+      ブラウザのデータを消去するとデータが失われます。
+    </div>
   </div>
 
 </div>
 
 <!-- FAB -->
-
 <button class="fab" id="fab" onclick="openModal()">+</button>
 
 <!-- NAV -->
-
 <nav>
   <button class="nav-btn active" onclick="showPage('today')" id="nav-today">
     <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
@@ -757,7 +742,6 @@ gap: 12px;
 </nav>
 
 <!-- ADD MODAL -->
-
 <div class="modal-overlay" id="modal-overlay" onclick="closeModalIfOutside(event)">
   <div class="modal">
     <div class="modal-handle"></div>
@@ -771,52 +755,49 @@ gap: 12px;
       <button class="tab" onclick="switchTab('exercise')" id="tab-exercise">🏃 運動</button>
     </div>
 
-```
-<!-- GYM CHECK -->
-<div class="form-group" style="display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:10px;padding:12px 14px">
-  <input type="checkbox" id="input-gym-check" style="width:20px;height:20px;accent-color:var(--accent)">
-  <label for="input-gym-check" style="font-size:15px;cursor:pointer;font-weight:500">🏋️ 今日ジムに行った</label>
-</div>
+    <!-- GYM CHECK -->
+    <div class="form-group" style="display:flex;align-items:center;gap:10px;background:var(--surface2);border-radius:10px;padding:12px 14px">
+      <input type="checkbox" id="input-gym-check" style="width:20px;height:20px;accent-color:var(--accent)">
+      <label for="input-gym-check" style="font-size:15px;cursor:pointer;font-weight:500">🏋️ 今日ジムに行った</label>
+    </div>
 
-<!-- MEAL TAB -->
-<div id="modal-meal">
-  <!-- Favorites quick select -->
-  <div id="fav-quick" style="margin-bottom:16px"></div>
+    <!-- MEAL TAB -->
+    <div id="modal-meal">
+      <!-- Favorites quick select -->
+      <div id="fav-quick" style="margin-bottom:16px"></div>
 
-  <div class="form-group">
-    <label class="form-label">食品名</label>
-    <input type="text" class="form-input" id="input-food-name" placeholder="例：ご飯（茶碗1杯）">
-  </div>
-  <div class="form-group">
-    <label class="form-label">カロリー（kcal）</label>
-    <input type="number" class="form-input" id="input-food-cal" placeholder="例：250">
-  </div>
-  <div class="form-group" style="display:flex;align-items:center;gap:10px">
-    <input type="checkbox" id="input-fav-check" style="width:18px;height:18px;accent-color:var(--accent)">
-    <label for="input-fav-check" style="font-size:14px;cursor:pointer">⭐ お気に入りに追加</label>
-  </div>
-  <button class="btn-primary" onclick="addMeal()">追加する</button>
-</div>
+      <div class="form-group">
+        <label class="form-label">食品名</label>
+        <input type="text" class="form-input" id="input-food-name" placeholder="例：ご飯（茶碗1杯）">
+      </div>
+      <div class="form-group">
+        <label class="form-label">カロリー（kcal）</label>
+        <input type="number" class="form-input" id="input-food-cal" placeholder="例：250">
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:10px">
+        <input type="checkbox" id="input-fav-check" style="width:18px;height:18px;accent-color:var(--accent)">
+        <label for="input-fav-check" style="font-size:14px;cursor:pointer">⭐ お気に入りに追加</label>
+      </div>
+      <button class="btn-primary" onclick="addMeal()">追加する</button>
+    </div>
 
-<!-- EXERCISE TAB -->
-<div id="modal-exercise" style="display:none">
-  <div id="ex-fav-quick" style="margin-bottom:16px"></div>
-  <div class="form-group">
-    <label class="form-label">運動名</label>
-    <input type="text" class="form-input" id="input-ex-name" placeholder="例：ウォーキング30分">
-  </div>
-  <div class="form-group">
-    <label class="form-label">消費カロリー（kcal）</label>
-    <input type="number" class="form-input" id="input-ex-cal" placeholder="例：150">
-  </div>
-  <div class="form-group" style="display:flex;align-items:center;gap:10px">
-    <input type="checkbox" id="input-ex-fav-check" style="width:18px;height:18px;accent-color:var(--accent)">
-    <label for="input-ex-fav-check" style="font-size:14px;cursor:pointer">⭐ お気に入りに追加</label>
-  </div>
-  <button class="btn-primary" onclick="addExercise()">追加する</button>
-</div>
-```
-
+    <!-- EXERCISE TAB -->
+    <div id="modal-exercise" style="display:none">
+      <div id="ex-fav-quick" style="margin-bottom:16px"></div>
+      <div class="form-group">
+        <label class="form-label">運動名</label>
+        <input type="text" class="form-input" id="input-ex-name" placeholder="例：ウォーキング30分">
+      </div>
+      <div class="form-group">
+        <label class="form-label">消費カロリー（kcal）</label>
+        <input type="number" class="form-input" id="input-ex-cal" placeholder="例：150">
+      </div>
+      <div class="form-group" style="display:flex;align-items:center;gap:10px">
+        <input type="checkbox" id="input-ex-fav-check" style="width:18px;height:18px;accent-color:var(--accent)">
+        <label for="input-ex-fav-check" style="font-size:14px;cursor:pointer">⭐ お気に入りに追加</label>
+      </div>
+      <button class="btn-primary" onclick="addExercise()">追加する</button>
+    </div>
   </div>
 </div>
 
@@ -1422,6 +1403,5 @@ function esc(s) {
 // ── INIT ──
 renderToday();
 </script>
-
 </body>
 </html>
