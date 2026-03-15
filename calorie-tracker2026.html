@@ -546,6 +546,20 @@
 
   .no-fav { color: var(--muted); font-size: 13px; text-align: center; padding: 20px 0; }
 
+  /* ── RECORDS IN MODAL ── */
+  .modal-records { margin-bottom: 16px; }
+  .modal-record-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 12px;
+    background: var(--surface2);
+    border-radius: 10px;
+    margin-bottom: 6px;
+  }
+  .modal-record-name { font-size: 14px; font-weight: 500; }
+  .modal-record-cal { font-size: 13px; font-family: 'Syne', sans-serif; font-weight: 700; }
+
   /* ── EDIT MODAL ── */
   .edit-overlay {
     position: fixed;
@@ -822,6 +836,12 @@
       <label for="input-gym-check" style="font-size:15px;cursor:pointer;font-weight:500">🏋️ 今日ジムに行った</label>
     </div>
 
+    <!-- EXISTING RECORDS -->
+    <div id="modal-records" style="display:none;margin-bottom:16px">
+      <div style="font-family:'Syne',sans-serif;font-size:13px;font-weight:700;color:var(--muted);margin-bottom:8px;">📋 この日の記録</div>
+      <div id="modal-records-list"></div>
+    </div>
+
     <!-- MEAL TAB -->
     <div id="modal-meal">
       <!-- Favorites quick select -->
@@ -1091,6 +1111,7 @@ function openModal() {
   document.getElementById('input-gym-check').checked = getGym()[key] === true;
   renderFavQuick();
   renderExFavQuick();
+  renderModalRecords(key);
 }
 
 function closeModal() {
@@ -1107,6 +1128,75 @@ function closeModal() {
 function updateGymCheck() {
   const date = document.getElementById('input-date').value;
   document.getElementById('input-gym-check').checked = getGym()[date] === true;
+  renderModalRecords(date);
+}
+
+function renderModalRecords(dateKey) {
+  const r = getRecords();
+  const rec = r[dateKey];
+  const el = document.getElementById('modal-records');
+  const list = document.getElementById('modal-records-list');
+
+  if (!rec || (rec.meals.length === 0 && rec.exercise.length === 0)) {
+    el.style.display = 'none';
+    return;
+  }
+
+  el.style.display = 'block';
+  let html = '';
+
+  rec.meals.forEach((m, i) => {
+    html += `<div class="modal-record-item">
+      <div>
+        <div class="modal-record-name">${esc(m.name)}</div>
+        <div class="modal-record-cal" style="color:var(--accent)">${m.cal} kcal</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button onclick="openEditModalByDate('meal',${i},'${dateKey}')" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted)">✏️</button>
+        <button onclick="deleteRecordByDate('meal',${i},'${dateKey}')" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted)">🗑️</button>
+      </div>
+    </div>`;
+  });
+
+  rec.exercise.forEach((e, i) => {
+    html += `<div class="modal-record-item">
+      <div>
+        <div class="modal-record-name">${esc(e.name)}</div>
+        <div class="modal-record-cal" style="color:var(--green)">-${e.cal} kcal</div>
+      </div>
+      <div style="display:flex;gap:6px">
+        <button onclick="openEditModalByDate('exercise',${i},'${dateKey}')" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted)">✏️</button>
+        <button onclick="deleteRecordByDate('exercise',${i},'${dateKey}')" style="background:none;border:1px solid var(--border);border-radius:8px;padding:5px 10px;cursor:pointer;font-size:12px;color:var(--muted)">🗑️</button>
+      </div>
+    </div>`;
+  });
+
+  list.innerHTML = html;
+}
+
+function deleteRecordByDate(type, index, dateKey) {
+  const r = getRecords();
+  if (!r[dateKey]) return;
+  if (type === 'meal') r[dateKey].meals.splice(index, 1);
+  else r[dateKey].exercise.splice(index, 1);
+  saveRecords(r);
+  renderModalRecords(dateKey);
+  renderToday();
+}
+
+function openEditModalByDate(type, index, dateKey) {
+  const r = getRecords();
+  const rec = r[dateKey];
+  const item = type === 'meal' ? rec.meals[index] : rec.exercise[index];
+  editType = type;
+  editIndex = index;
+  editDateKey = dateKey;
+  document.getElementById('edit-modal-title').textContent = type === 'meal' ? '食事を編集' : '運動を編集';
+  document.getElementById('edit-name-label').textContent = type === 'meal' ? '食品名' : '運動名';
+  document.getElementById('edit-cal-label').textContent = type === 'meal' ? 'カロリー（kcal）' : '消費カロリー（kcal）';
+  document.getElementById('edit-name').value = item.name;
+  document.getElementById('edit-cal').value = item.cal;
+  document.getElementById('edit-overlay').classList.add('open');
 }
 
 function saveGymFromModal() {
@@ -1392,24 +1482,18 @@ function renderStats() {
 // ── EDIT MODAL ──
 let editType = null;
 let editIndex = null;
+let editDateKey = null;
 
 function openEditModal(type, index) {
-  const data = getTodayData();
-  const item = type === 'meal' ? data.meals[index] : data.exercise[index];
-  editType = type;
-  editIndex = index;
-  document.getElementById('edit-modal-title').textContent = type === 'meal' ? '食事を編集' : '運動を編集';
-  document.getElementById('edit-name-label').textContent = type === 'meal' ? '食品名' : '運動名';
-  document.getElementById('edit-cal-label').textContent = type === 'meal' ? 'カロリー（kcal）' : '消費カロリー（kcal）';
-  document.getElementById('edit-name').value = item.name;
-  document.getElementById('edit-cal').value = item.cal;
-  document.getElementById('edit-overlay').classList.add('open');
+  editDateKey = todayKey();
+  openEditModalByDate(type, index, editDateKey);
 }
 
 function closeEditModal() {
   document.getElementById('edit-overlay').classList.remove('open');
   editType = null;
   editIndex = null;
+  editDateKey = null;
 }
 
 function closeEditIfOutside(e) {
@@ -1420,14 +1504,14 @@ function saveEdit() {
   const name = document.getElementById('edit-name').value.trim();
   const cal = parseInt(document.getElementById('edit-cal').value);
   if (!name || !cal || cal <= 0) return alert('正しく入力してください');
-  const data = getTodayData();
-  if (editType === 'meal') {
-    data.meals[editIndex] = { name, cal };
-  } else {
-    data.exercise[editIndex] = { name, cal };
-  }
-  saveTodayData(data);
+  const key = editDateKey || todayKey();
+  const r = getRecords();
+  if (!r[key]) r[key] = { meals: [], exercise: [] };
+  if (editType === 'meal') r[key].meals[editIndex] = { name, cal };
+  else r[key].exercise[editIndex] = { name, cal };
+  saveRecords(r);
   closeEditModal();
+  renderModalRecords(key);
   renderToday();
 }
 
